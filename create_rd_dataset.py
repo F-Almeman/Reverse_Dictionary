@@ -61,6 +61,7 @@ if __name__ == '__main__':
                        [int(.6*len(unified_dataset)), int(.8*len(unified_dataset))])
 
   
+  new_df.to_csv(os.path.join(args.output_path, "RD_dataset.csv"), index = False, header=True)
   random_train.to_csv(os.path.join(args.output_path, "random_train.csv"), index = False, header=True)
   random_valid.to_csv(os.path.join(args.output_path, "random_valid.csv"), index = False, header=True)
   random_test.to_csv(os.path.join(args.output_path, "random_test.csv"), index = False, header=True)
