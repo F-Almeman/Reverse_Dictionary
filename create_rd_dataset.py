@@ -10,7 +10,8 @@ if __name__ == '__main__':
   # Create the parser
   parser = argparse.ArgumentParser()
 
-  parser.add_argument('-d','--dataset_file',help='The main dataset (word, definition, example, source)',required=True)
+  parser.add_argument('-d','--dataset_file',help='The main dataset (term, definition, example, source)',required=True)
+  parser.add_argument('-s','--split',help='Split type',default="random")
   parser.add_argument('-o','--output_path',help='Path to output files (train/test/val)',required=True)
 
   args = parser.parse_args()
