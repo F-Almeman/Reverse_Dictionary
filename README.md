@@ -15,14 +15,30 @@ python3 get_definitions.py -d 3dex.csv -o datasets
 Then, we computed definitions and terms embeddings using SBERT model. 
 
 ```
-python3 get_definitions.py -d definitions_dataset.csv -o datasets -m "all-MiniLM-L6-v2"
+python3 get_definitions.py -d definitions_dataset.csv -o datasets 
 ```
-
+-d: input file (dataset) <br/>
+-o: output folder <br/>
+-m: SBERT model (default = "all-MiniLM-L6-v2" )
 
 
 ## Splitting ##
-Two splits are created from the new dataset that includes definitions and terms embeddings which are Random_Split and Source_Split.
+Two splits are created from the new dataset that includes definitions and terms embeddings which are Random_Split and Source_Split. Source_Split splits the datasets based on the specidied source ('MultiRD', 'CODWOE', 'Webster\'s Unabridged', 'Urban', 'Wikipedia', 'WordNet', 'Wiktionary', 'Hei++', 'CHA', 'Sci-definition')
 
 ```
-python3 split_dataset.py -d embed_dataset.csv -o datasets -s "random"
+python3 split_dataset.py -d embed_dataset.csv -o datasets -s "WordNet"
 ```
+-d: input file (dataset) <br/>
+-o: output folder <br/>
+-s: split type (default = "random" )
+
+## Reverse Dictionary (RD) Experiment ##
+Two splits are created from the new dataset that includes definitions and terms embeddings which are Random_Split and Source_Split. Source_Split splits the datasets based on the specidied source ('MultiRD', 'CODWOE', 'Webster\'s Unabridged', 'Urban', 'Wikipedia', 'WordNet', 'Wiktionary', 'Hei++', 'CHA', 'Sci-definition')
+
+```
+python3 run_rd.py -d embed_dataset.csv -o datasets -s "WordNet"
+```
+-d: input file (dataset) <br/>
+-o: output folder <br/>
+-s: split type (default = "random" )
+
