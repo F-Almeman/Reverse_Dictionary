@@ -11,7 +11,6 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser()
 
   parser.add_argument('-d','--dataset_file',help='The main dataset (term, definition, example, source)',required=True)
-  parser.add_argument('-s','--split',help='Split type',default="random")
   parser.add_argument('-o','--output_path',help='Path to output files (train/test/val)',required=True)
 
   args = parser.parse_args()
@@ -51,18 +50,6 @@ if __name__ == '__main__':
   new_data_list = [(key, value['TERMS_LIST'], value['SOURCE']) for key, value in new_dataset.items()]
 
   # Create a new dataframe from the list of tuples
-  new_df = pd.DataFrame(new_data_list, columns=['DEFINITION', 'TERMS_LIST', 'SOURCE'])
+  new_df = pd.DataFrame(new_data_list, columns=['DEFINITION', 'TERMS', 'SOURCES'])
   
-  new_df['NUMBER_TERMS'] = new_df['TERMS_LIST'].str.len()
-  new_df['NUMBER_SOURCES'] = new_df['SOURCE'].apply(lambda x: len(set(x)))
-  
-  # Random splits
-  random_train, random_valid, random_test = \
-              np.split(unified_dataset.sample(frac=1, random_state=42), 
-                       [int(.6*len(unified_dataset)), int(.8*len(unified_dataset))])
-
-  
-  new_df.to_csv(os.path.join(args.output_path, "RD_dataset.csv"), index = False, header=True)
-  random_train.to_csv(os.path.join(args.output_path, "random_train.csv"), index = False, header=True)
-  random_valid.to_csv(os.path.join(args.output_path, "random_valid.csv"), index = False, header=True)
-  random_test.to_csv(os.path.join(args.output_path, "random_test.csv"), index = False, header=True)
+  new_df.to_csv(os.path.join(args.output_path, "definitions.csv"), index = False, header=True)
