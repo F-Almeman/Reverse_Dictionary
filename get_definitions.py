@@ -52,4 +52,4 @@ if __name__ == '__main__':
   # Create a new dataframe from the list of tuples
   new_df = pd.DataFrame(new_data_list, columns=['DEFINITION', 'TERMS', 'SOURCES'])
   
-  new_df.to_csv(os.path.join(args.output_path, "definitions.csv"), index = False, header=True)
+  new_df.to_csv(os.path.join(args.output_path, "definitions_dataset.csv"), index = False, header=True)
