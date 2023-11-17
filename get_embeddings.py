@@ -11,8 +11,8 @@ if __name__ == '__main__':
   # Create the parser
   parser = argparse.ArgumentParser()
 
-  parser.add_argument('-d','--dataset_file',help='The main dataset (term, definition, example, source)',required=True)
-  parser.add_argument('-o','--output_path',help='Path to output files (train/test/val)',required=True)
+  parser.add_argument('-d','--dataset_file',help='The main dataset',required=True)
+  parser.add_argument('-o','--output_path',help='Path to the output file',required=True)
   parser.add_argument('-m', '--model', help='Model type', default='all-MiniLM-L6-v2')
 
   args = parser.parse_args()
