@@ -33,10 +33,9 @@ python3 split_dataset.py -d embed_dataset.csv -o datasets -s "WordNet"
 -s: split type (default = "random" )
 
 ## Reverse Dictionary (RD) Experiment ##
-Two splits are created from the new dataset that includes definitions and terms embeddings which are Random_Split and Source_Split. Source_Split splits the datasets based on the specidied source ('MultiRD', 'CODWOE', 'Webster\'s Unabridged', 'Urban', 'Wikipedia', 'WordNet', 'Wiktionary', 'Hei++', 'CHA', 'Sci-definition')
-
+This section is to retrive the best K terms for each definition based on the similarity between the definition embedding and terms embeddings.
 ```
-python3 run_rd.py -d embed_dataset.csv -o datasets -s "WordNet"
+python3 run_rd.py -d embed_dataset.csv -k 5 ....
 ```
 -d: input file (dataset) <br/>
 -o: output folder <br/>
