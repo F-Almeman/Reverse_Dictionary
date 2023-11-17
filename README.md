@@ -15,7 +15,7 @@ python3 get_definitions.py -d 3dex.csv -o datasets
 Then, we computed definitions and terms embeddings using SBERT model. 
 
 ```
-python3 get_definitions.py -d definitions_dataset.csv -o datasets 
+python3 get_embeddings.py -d definitions_dataset.csv -o datasets 
 ```
 -d: input file (dataset) <br/>
 -o: output folder <br/>
