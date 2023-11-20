@@ -25,11 +25,11 @@ if __name__ == '__main__':
               np.split(dataset.sample(frac=1, random_state=42),
                        [int(.6*len(dataset)), int(.8*len(dataset))])
 
-    train.to_csv("dataset_random_train.csv", header = True, index = False)
-    valid.to_csv("dataset_random_valid.csv", header = True, index = False)
-    test.to_csv("dataset_random_test.csv", header = True, index = False)
+    train.to_csv(os.path.join(args.output_path, "dataset_random_train.csv", header = True, index = False)
+    valid.to_csv(os.path.join(args.output_path, "dataset_random_valid.csv", header = True, index = False)
+    test.to_csv(os.path.join(args.output_path, "dataset_random_test.csv", header = True, index = False)
  
   # Source Split
   else:
     split = dataset[dataset['SOURCE'].str.contains(args.split_type)]
-    split.to_csv(f"dataset_{args.split_type}.csv", header = True, index = False)
+    split.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}.csv", header = True, index = False)
