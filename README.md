@@ -23,7 +23,7 @@ python3 get_embeddings.py -d definitions_dataset.csv -o datasets
 
 
 ## Splitting ##
-Two splits are created from the new dataset that includes definitions and terms embeddings which are Random_Split and Source_Split. Source_Split splits the datasets based on the specidied source ('MultiRD', 'CODWOE', 'Webster\'s Unabridged', 'Urban', 'Wikipedia', 'WordNet', 'Wiktionary', 'Hei++', 'CHA', 'Sci-definition')
+Two splits are created from the new dataset that includes definitions and terms embeddings which are Random_Split and Source_Split. Source_Split splits the dataset based on the specified source ('MultiRD', 'CODWOE', 'Webster\'s Unabridged', 'Urban', 'Wikipedia', 'WordNet', 'Wiktionary', 'Hei++', 'CHA', 'Sci-definition')
 
 ```
 python3 split_dataset.py -d embed_dataset.csv -o datasets -s "WordNet"
