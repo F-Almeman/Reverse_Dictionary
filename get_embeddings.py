@@ -41,6 +41,5 @@ if __name__ == '__main__':
   # Convert NumPy arrays to lists
   df['TERM_EMBED'] = df['TERM_EMBED'].apply(lambda x: x.tolist())
   df['DEF_EMBED'] = df['DEF_EMBED'].apply(lambda x: x.tolist())
-  df.rename(columns={"DATASET_NAME": "SOURCE"}, inplace=True)
 
   df.to_csv(os.path.join(args.output_path, "embed_dataset.csv"), index = False, header=True)
