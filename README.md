@@ -33,7 +33,7 @@ python3 split_dataset.py -d embed_dataset.csv -o datasets -s "WordNet"
 -s: split type (default = "random" )
 
 ## Reverse Dictionary (RD) Experiment ##
-This section is to retrive the best K terms for each definition based on the similarity between the definition embedding and terms embeddings.
+This section is to retrive the best K terms for each definition based on the similarity between the definition embedding and all terms embeddings.
 ```
 python3 run_rd.py -d embed_dataset.csv -k 5 ....
 ```
