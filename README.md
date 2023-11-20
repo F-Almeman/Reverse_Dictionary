@@ -17,7 +17,7 @@ Then, we computed definitions and terms embeddings using SBERT model.
 ```
 python3 get_embeddings.py -d definitions_dataset.csv -o datasets 
 ```
--d: input file (dataset) <br/>
+-d: input file (definitions dataset) <br/>
 -o: output folder <br/>
 -m: SBERT model (default = "all-MiniLM-L6-v2" )
 
@@ -28,16 +28,16 @@ Two splits are created from the new dataset that includes definitions and terms 
 ```
 python3 split_dataset.py -d embed_dataset.csv -o datasets -s "WordNet"
 ```
--d: input file (dataset) <br/>
+-d: input file (embedings dataset) <br/>
 -o: output folder <br/>
 -s: split type (default = "random" )
 
 ## Reverse Dictionary (RD) Experiment ##
 This section is to retrive the best K terms for each definition based on the similarity between the definition embedding and all terms embeddings.
 ```
-python3 run_rd.py -d embed_dataset.csv -k 5 ....
+python3 run_rd.py -d dataset.csv -k 5 ....
 ```
--d: input file (dataset) <br/>
+-d: input file (split dataset) <br/>
 -o: output folder <br/>
--s: split type (default = "random" )
+-k: number of best terms
 
