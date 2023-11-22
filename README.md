@@ -6,14 +6,14 @@ This task is a ranking problem in which, given a definition, the task is to retr
 In this work we used [3D-EX](https://github.com/F-Almeman/3D-EX/tree/main), a unified resource containing several dictionaries in the format of (Term, Definition, Example, Source). First, we computed the embeddings of all terms, definitions, and examples and save these vestors into numpy files.
 
 ```
-python3 get_embeddings.py -i definitions.txt -o datasets 
+python3 get_embeddings.py -i datasets/definitions.txt -o datasets 
 ```
 -i: input text file (terms file, definitions file, or examples file) <br/>
 -o: output folder <br/>
 -m: model (default = "all-MiniLM-L6-v2" form SBERT)
 
 ## Dataset ##
-From 3D-EX, we retrieved all the definitions along with their corresponding terms, examples and sources, creating <definition, [list_of_terms_defined_by_that_definition],[list_of_examples],  [list_of_sources]> tuples. [dataset.csv](https://drive.google.com/uc?export=download&id=11B25YeDUkIhPIqXCrxvHIoU-ovSw0W4s). 
+From 3D-EX, we retrieved all the definitions along with their corresponding terms, examples and sources, creating <definition, [list_of_terms_defined_by_that_definition],[list_of_examples],  [list_of_sources]> tuples. [dataset.csv](https://drive.google.com/uc?export=download&id=1J9AumQwLZt0B8P6ndbwH-FM4tmdogkqX). 
 
 ```
 python3 get_definitions.py -d 3dex.csv -o datasets
