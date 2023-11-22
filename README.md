@@ -6,9 +6,9 @@ This task is a ranking problem in which, given a definition, the task is to retr
 In this work we used [3D-EX](https://github.com/F-Almeman/3D-EX/tree/main), a unified resource containing several dictionaries in the format of (Term, Definition, Example, Source). First, we computed the embeddings of all terms, definitions, and examples and save these vestors into numpy files.
 
 ```
-python3 get_embeddings.py -d definitions.txt -o datasets 
+python3 get_embeddings.py -i definitions.txt -o datasets 
 ```
--d: input text file (terms file, definitions file, or examples file) <br/>
+-i: input text file (terms file, definitions file, or examples file) <br/>
 -o: output folder <br/>
 -m: model (default = "all-MiniLM-L6-v2" form SBERT)
 
