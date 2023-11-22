@@ -2,24 +2,24 @@
 
 This task is a ranking problem in which, given a definition, the task is to retrieve a ranked list of the most relevant words. 
 
+## Embeddings ##
+In this work we used [3D-EX](https://github.com/F-Almeman/3D-EX/tree/main), a unified resource containing several dictionaries in the format of (Term, Definition, Example, Source). First, we computed the embeddings of all terms, definitions, and examples and save these vestors into numpy files.
+
+```
+python3 get_embeddings.py -d definitions.csv -o datasets 
+```
+-d: input file (terms file, definitions file, or examples file) <br/>
+-o: output folder <br/>
+-m: model (default = "all-MiniLM-L6-v2" form SBERT)
+
 ## Dataset ##
-First, We have used [3D-EX](https://github.com/F-Almeman/3D-EX/tree/main), , a unified resource containing several dictionaries in the format of (Term, Definition, Example, Source), to retrieve all the definitions along with their corresponding terms and sources, creating <definition, [list_of_terms_defined_by_that_definition], [list_of_sources]> tuples.  [definitions_dataset.csv](https://drive.google.com/uc?export=download&id=11B25YeDUkIhPIqXCrxvHIoU-ovSw0W4s). 
+From 3D-EX, we retrieved all the definitions along with their corresponding terms, examples and sources, creating <definition, [list_of_terms_defined_by_that_definition],[list_of_examples],  [list_of_sources]> tuples. [dataset.csv](https://drive.google.com/uc?export=download&id=11B25YeDUkIhPIqXCrxvHIoU-ovSw0W4s). 
 
 ```
 python3 get_definitions.py -d 3dex.csv -o datasets
 ```
 -d: input file (dataset) <br/>
--o: output folder <br/>
-
-## Embeddings ##
-Then, we computed definitions and terms embeddings using SBERT model. 
-
-```
-python3 get_embeddings.py -d definitions_dataset.csv -o datasets 
-```
--d: input file (definitions dataset) <br/>
--o: output folder <br/>
--m: SBERT model (default = "all-MiniLM-L6-v2" )
+-o: output folder <br/
 
 
 ## Splitting ##
