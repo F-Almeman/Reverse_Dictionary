@@ -5,6 +5,7 @@ import sys
 import csv
 import numpy as np
 import random
+from ast import literal_eval
 
 if __name__ == '__main__':
   # Create the parser
@@ -18,38 +19,30 @@ if __name__ == '__main__':
   # Read the dataset file
   dataset = pd.read_csv(args.dataset_file, engine='python', na_values = [''], keep_default_na=False)
 
+  # Convert the string representations of lists back to actual lists
+  dataset['DATASET_NAME'] = dataset['DATASET_NAME'].apply(eval)
 
-  # Extract sources
-  sources = ['MultiRD', 'CODWOE', 'Webster\'s Unabridged', 'Urban', 'Wikipedia', 'WordNet', 'Wiktionary', 'Hei++', 'CHA', 'Sci-definition' ]
-  dataset_list = []
-  for idx in range(len(dataset)):
-    l = []
-    for s in sources:
-      if s in dataset.iloc[idx].DATASET_NAME:
-        l.append(s)
-    dataset_list.append(set(l))
-
-  dataset['DATASET_SET'] = dataset_list
-
-  # Create a dataframe of (definition, [list of terms], [list of sources])
+  # Create a dataframe of (definition, [list of terms], [list of examples] [list of sources])
   new_dataset = {}
 
   for index, row in dataset.iterrows():
     definition = row['DEFINITION']
     word = row['TERM']
-    source_list = list(row['DATASET_SET'])
+    examples = row['EXAMPLE']
+    source_list = row['DATASET_NAME']
 
-    # Check if definition is already in the new_dataset dictionary
+    # Check if the definition is already in the new_dataset dictionary
     if definition in new_dataset:
         new_dataset[definition]['TERMS_LIST'].append(word)
-        new_dataset[definition]['SOURCE'].extend(source_list)
+        new_dataset[definition]['EXAMPLES'].append(examples)
+        new_dataset[definition]['SOURCES'].append(source_list)
     else:
-        new_dataset[definition] = {'TERMS_LIST': [word], 'SOURCE': source_list}
+        new_dataset[definition] = {'TERMS_LIST': [word], 'EXAMPLES': [examples], 'SOURCES': source_list }
 
   # Create a list of tuples from the new_data dictionary
-  new_data_list = [(key, value['TERMS_LIST'], value['SOURCE']) for key, value in new_dataset.items()]
+  new_data_list = [(key, value['TERMS_LIST'], value['EXAMPLES'], value['SOURCES']) for key, value in new_dataset.items()]
 
   # Create a new dataframe from the list of tuples
-  new_df = pd.DataFrame(new_data_list, columns=['DEFINITION', 'TERMS', 'SOURCES'])
+  new_df = pd.DataFrame(new_data_list, columns=['DEFINITION', 'TERMS', 'EXAMPLES', 'SOURCES'])
   
   new_df.to_csv(os.path.join(args.output_path, "definitions_dataset.csv"), index = False, header=True)
