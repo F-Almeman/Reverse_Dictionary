@@ -24,9 +24,9 @@ if __name__ == '__main__':
   args = parser.parse_args()
         
   # Read the files
-  dataset = pd.read_csv(args.dataset_file, engine='python', na_values = [''], keep_default_na=False)
-  dataset['TERMS_LIST'] = dataset['TERMS_LIST'].apply(ast.literal_eval)
-  dataset['SOURCES_LIST'] = dataset['SOURCES_LIST'].apply(ast.literal_eval)
+  dataset = pd.read_csv(args.dataset_split, engine='python', na_values = [''], keep_default_na=False)
+  dataset['TERMS'] = dataset['TERMS'].apply(ast.literal_eval)
+  dataset['SOURCES'] = dataset['SOURCES'].apply(ast.literal_eval)
 
   with open(args.terms_file, 'r') as file:
     terms = [line.strip() for line in file]
@@ -38,14 +38,14 @@ if __name__ == '__main__':
   terms_embeddings = np.load(args.terms_embeddings_file)
   def_embeddings = np.load(args.definitions_embeddings_file)
 
-  k = args.number_terms
+  top_k = args.number_terms
   hits_column = []
   pred_terms_column  = []
 
   for idx in range(len(dataset)):
     definition = dataset.DEFINITION.iloc[idx]
-    gold_terms = dataset.TERM.iloc[idx]
-    index_of_def = definitions.index(query)
+    gold_terms = dataset.TERMS.iloc[idx]
+    index_of_def = definitions.index(definition)
     d_embedding = def_embeddings[index_of_def]
 
     t_embeddings = []
