@@ -19,7 +19,7 @@ From 3D-EX, we retrieved all the definitions along with their corresponding term
 python3 get_definitions.py -d 3dex.csv -o datasets
 ```
 -d: input file (dataset) <br/>
--o: output folder <br/
+-o: output folder <br/>
 
 
 ## Splitting ##
