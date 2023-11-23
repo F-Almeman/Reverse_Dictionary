@@ -12,7 +12,7 @@ if __name__ == '__main__':
   # Create the parser
   parser = argparse.ArgumentParser()
 
-  parser.add_argument('-d','--dataset_file',help='The dataset',required=True)
+  parser.add_argument('-s','--dataset_split',help='The dataset',required=True)
   parser.add_argument('-t','--terms_file',help='The terms file',required=True)
   parser.add_argument('-te','--terms_embeddings_file',help='The terms embeddings file',required=True)
   parser.add_argument('-d','--definitions_file',help='The definitions file',required=True)
