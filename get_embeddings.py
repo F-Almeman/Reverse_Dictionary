@@ -4,7 +4,8 @@ import os
 import sys
 import csv
 import numpy as np
-from sentence_transformers import  SentenceTransformer, util
+from sentence_transformers import  SentenceTransformer
+from pathlib import Path
 import torch
 
 if __name__ == '__main__':
@@ -28,4 +29,4 @@ if __name__ == '__main__':
   embeddings = model.encode(data, convert_to_tensor=True)
 
   # Save the embeddings to a numpy file
-  np.save(os.path.join(args.output_path, f"{args.input_file}_{args.model}.npy"), embeddings.numpy())
+  np.save(os.path.join(args.output_path, f"{Path(args.input_file).stem}_{args.model}.npy"), embeddings.numpy())
