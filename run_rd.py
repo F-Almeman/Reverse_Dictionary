@@ -38,7 +38,6 @@ if __name__ == '__main__':
   def_embeddings = np.load(args.definitions_embeddings_file)
 
   k = args.number_terms
-  results = []
   hits_column = []
   pred_terms_column  = []
 
@@ -70,6 +69,9 @@ if __name__ == '__main__':
     hits_column.append(hits)
     pred_terms_column.append(pred_terms)
 
-    results.append(hits)
+dataset["HITS"] =  hits_column
+dataset["PREDICTED_TERMS"] = pred_terms_column
+dataset.to_csv(os.path.join(args.output_path, "rd_dataset.csv"), index = False, header=True)
+  
   
 
