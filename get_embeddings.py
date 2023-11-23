@@ -11,35 +11,21 @@ if __name__ == '__main__':
   # Create the parser
   parser = argparse.ArgumentParser()
 
-  parser.add_argument('-d','--dataset_file',help='The main dataset',required=True)
+  parser.add_argument('-i','--input_file',help='The input txt file',required=True)
   parser.add_argument('-o','--output_path',help='Path to the output file',required=True)
   parser.add_argument('-m', '--model', help='Model type', default='all-MiniLM-L6-v2')
 
   args = parser.parse_args()
         
-  # Read the dataset file
-  df = pd.read_csv(args.dataset_file, engine='python', na_values = [''], keep_default_na=False)
+  # Read the input file
+  with open(args.input_file, 'r') as file:
+    data = [line.strip() for line in file]
 
-  embedder = SentenceTransformer('sentence-transformers/'+ args.model)
+  # Load a pre-trained SBERT model
+  model = SentenceTransformer('sentence-transformers/'+ args.model)
 
-  term_embed_column  = []
-  def_embed_column  = []
+  # Compute embeddings 
+  embeddings = model.encode(data, convert_to_tensor=True)
 
-  for idx in range(len(df)):
-    term = df.TERM.iloc[idx]
-    definition = df.DEFINITION.iloc[idx]
-
-    term_embedding = embedder.encode(term, convert_to_tensor=True)
-    definition_embedding = embedder.encode(definition, convert_to_tensor=True)
-
-    term_embed_column.append(term_embedding)
-    def_embed_column.append(definition_embedding)
-
-  df["TERM_EMBED"] =  term_embed_column
-  df["DEF_EMBED"] = def_embed_column
-
-  # Convert NumPy arrays to lists
-  df['TERM_EMBED'] = df['TERM_EMBED'].apply(lambda x: x.tolist())
-  df['DEF_EMBED'] = df['DEF_EMBED'].apply(lambda x: x.tolist())
-
-  df.to_csv(os.path.join(args.output_path, "embed_dataset.csv"), index = False, header=True)
+  # Save the embeddings to a numpy file
+  np.save(os.path.join(args.output_path, f"{args.input_file}_{args.model}.npy"), embeddings.numpy())
