@@ -13,7 +13,7 @@ python3 get_embeddings.py -i datasets/definitions.txt -o datasets
 -m: model (default = "all-MiniLM-L6-v2" form SBERT)
 
 ## Dataset ##
-From 3D-EX, we retrieved all the definitions along with their corresponding terms, examples and sources, creating <definition, [list_of_terms_defined_by_that_definition],[list_of_examples],  [list_of_sources]> tuples. [dataset.csv](https://drive.google.com/uc?export=download&id=1J9AumQwLZt0B8P6ndbwH-FM4tmdogkqX). 
+From 3D-EX, we retrieved all the definitions along with their corresponding terms, examples and sources, creating <definition, [list_of_terms_defined_by_that_definition], [list_of_examples],  [list_of_sources]> tuples. [dataset.csv](https://drive.google.com/uc?export=download&id=1J9AumQwLZt0B8P6ndbwH-FM4tmdogkqX). 
 
 ```
 python3 get_definitions.py -d 3dex.csv -o datasets
@@ -23,10 +23,10 @@ python3 get_definitions.py -d 3dex.csv -o datasets
 
 
 ## Splitting ##
-Two splits are created from the new dataset that includes definitions and terms embeddings which are Random_Split and Source_Split. Source_Split splits the dataset based on the specified source ('MultiRD', 'CODWOE', 'Webster\'s Unabridged', 'Urban', 'Wikipedia', 'WordNet', 'Wiktionary', 'Hei++', 'CHA', 'Sci-definition')
+Two splits are created: Random_Split and Source_Split. Source_Split splits the dataset based on the specified source ('MultiRD', 'CODWOE', 'Webster\'s Unabridged', 'Urban', 'Wikipedia', 'WordNet', 'Wiktionary', 'Hei++', 'CHA', 'Sci-definition')
 
 ```
-python3 split_dataset.py -d embed_dataset.csv -o datasets -s "WordNet"
+python3 split_dataset.py -d datasets/dataset.csv -o datasets -s "WordNet"
 ```
 -d: input file (embedings dataset) <br/>
 -o: output folder <br/>
