@@ -45,3 +45,13 @@ python3 run_rd.py -d dataset.csv -t terms.txt -te terms_all-MiniLM-L6-v2.npy -d 
 -o: output folder <br/>
 -k: number of best terms
 
+## RD Evaluation ##
+Different measures could be used to evaluate the RD task. 
+```
+python3 evaluate_rd.py -s terms_all-MiniLM-L6-v2_definitions_all-MiniLM-L6-v2.npy_rd_dataset.csv -e "mrr"
+```
+
+-d: the dataset generated from the previous step  <br/>
+-e: evaluation method ("mrr", "", "") <br/>
+
+
