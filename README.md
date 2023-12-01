@@ -35,7 +35,7 @@ python3 split_dataset.py -d datasets/dataset.csv -o datasets -s "WordNet"
 ## Reverse Dictionary (RD) Experiment ##
 This section is to retrive the best K terms for each definition based on the similarity between the definition embedding and all terms embeddings.
 ```
-python3 run_rd.py -d dataset.csv -t terms.txt -te terms_all-MiniLM-L6-v2.npy -d definitions.txt -de definitions_all-MiniLM-L6-v2.npy -o datasets -k 5 
+python3 run_rd.py -d rd_dataset_random_test.csv -t terms.txt -te terms_all-MiniLM-L6-v2.npy -d definitions.txt -de definitions_all-MiniLM-L6-v2.npy -o datasets -k 5 
 ```
 -s: split dataset <br/>
 -t: terms file <br/>
