@@ -5,6 +5,8 @@ import sys
 import csv
 import numpy as np
 import random
+import ast
+from ast import literal_eval
 
 if __name__ == '__main__':
   # Create the parser
@@ -31,5 +33,5 @@ if __name__ == '__main__':
  
   # Source Split
   else:
-    split = dataset[dataset['SOURCE'].str.contains(args.split_type)]
+    split = dataset[dataset['SOURCES'].str.contains(args.split_type)]
     split.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}.csv", header = True, index = False)
