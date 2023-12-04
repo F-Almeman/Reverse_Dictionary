@@ -28,21 +28,24 @@ if __name__ == '__main__':
   for index, row in dataset.iterrows():
     definition = row['DEFINITION']
     word = row['TERM']
-    examples = row['EXAMPLE']
+    if pd.isna(row['EXAMPLE']):
+      examples = []
+    else:
+      examples = row['EXAMPLE']
     source_list = row['DATASET_NAME']
 
     # Check if the definition is already in the new_dataset dictionary
     if definition in new_dataset:
-        new_dataset[definition]['TERMS_LIST'].append(word)
-        new_dataset[definition]['EXAMPLES'].append(examples)
-        new_dataset[definition]['SOURCES'].append(source_list)
+      new_dataset[definition]['TERMS_LIST'].append(word)
+      new_dataset[definition]['EXAMPLES'].append(examples)
+      new_dataset[definition]['SOURCES'].append(source_list)
     else:
-        new_dataset[definition] = {'TERMS_LIST': [word], 'EXAMPLES': [examples], 'SOURCES': source_list }
+      new_dataset[definition] = {'TERMS_LIST': [word], 'EXAMPLES': [examples], 'SOURCES': [source_list] }
 
   # Create a list of tuples from the new_data dictionary
   new_data_list = [(key, value['TERMS_LIST'], value['EXAMPLES'], value['SOURCES']) for key, value in new_dataset.items()]
 
   # Create a new dataframe from the list of tuples
   new_df = pd.DataFrame(new_data_list, columns=['DEFINITION', 'TERMS', 'EXAMPLES', 'SOURCES'])
-  
+
   new_df.to_csv(os.path.join(args.output_path, "definitions_dataset.csv"), index = False, header=True)
