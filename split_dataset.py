@@ -20,6 +20,9 @@ if __name__ == '__main__':
         
   # Read the dataset file
   dataset = pd.read_csv(args.dataset_file, na_values = [''], keep_default_na=False)
+  dataset['TERMS'] = dataset['TERMS'].apply(ast.literal_eval)
+  dataset['EXAMPLES'] = dataset['EXAMPLES'].apply(ast.literal_eval)
+  dataset['SOURCES'] = dataset['SOURCES'].apply(ast.literal_eval)
   
   # Source Split
   if args.split_type != "random":
