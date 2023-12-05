@@ -19,19 +19,21 @@ if __name__ == '__main__':
   args = parser.parse_args()
         
   # Read the dataset file
-  dataset = pd.read_csv(args.dataset_file, engine='python', na_values = [''], keep_default_na=False)
+  dataset = pd.read_csv(args.dataset_file, na_values = [''], keep_default_na=False)
   
-  # Random Split
-  if args.split_type == "random":
-    train, valid, test = \
+  # Source Split
+  if args.split_type != "random":
+    dataset = dataset[dataset['SOURCES'].apply(lambda x: any(args.split_type in sublist_element for sublist in x for sublist_element in sublist))]
+    
+    # Update 'TERMS' and 'EXAMPLES' 'SOURCES' columns based on the filter
+    dataset['TERMS'] = dataset.apply(lambda row: [terms_list for terms_list, sources_list in zip(row['TERMS'], row['SOURCES']) if any(args.split_type in sublist for sublist in sources_list)], axis=1)
+    dataset['EXAMPLES'] = dataset.apply(lambda row: [examples_list for examples_list, sources_list in zip(row['EXAMPLES'], row['SOURCES']) if any(args.split_type in sublist for sublist in sources_list)], axis=1)
+    dataset['SOURCES'] = dataset['SOURCES'].apply(lambda x: [sources_list for sources_list in x if any(args.split_type in sublist for sublist in sources_list)])
+
+  train, valid, test = \
               np.split(dataset.sample(frac=1, random_state=42),
                        [int(.6*len(dataset)), int(.8*len(dataset))])
 
-    train.to_csv(os.path.join(args.output_path, "dataset_random_train.csv", header = True, index = False)
-    valid.to_csv(os.path.join(args.output_path, "dataset_random_valid.csv", header = True, index = False)
-    test.to_csv(os.path.join(args.output_path, "dataset_random_test.csv", header = True, index = False)
- 
-  # Source Split
-  else:
-    split = dataset[dataset['SOURCES'].str.contains(args.split_type)]
-    split.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}.csv", header = True, index = False)
+  train.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}_train.csv", header = True, index = False)
+  valid.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}_valid.csv", header = True, index = False)
+  test.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}_test.csv", header = True, index = False)
