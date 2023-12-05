@@ -89,6 +89,7 @@ if __name__ == '__main__':
     hits_column.append(hits)
     pred_terms_column.append(pred_terms)
 
+  dataset = dataset.drop('EXAMPLES', axis=1)
   dataset["HITS"] =  hits_column
   dataset["PREDICTED_TERMS"] = pred_terms_column
   dataset.to_csv(os.path.join(args.output_path,f"{Path(args.terms_embeddings_file).stem}_{Path(args.definitions_embeddings_file).stem}_rd_dataset.csv"), index = False, header=True)
