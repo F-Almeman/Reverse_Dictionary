@@ -37,6 +37,6 @@ if __name__ == '__main__':
               np.split(dataset.sample(frac=1, random_state=42),
                        [int(.6*len(dataset)), int(.8*len(dataset))])
 
-  train.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}_train.csv", header = True, index = False)
-  valid.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}_valid.csv", header = True, index = False)
-  test.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}_test.csv", header = True, index = False)
+  train.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}_train.csv"), header = True, index = False)
+  valid.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}_valid.csv"), header = True, index = False)
+  test.to_csv(os.path.join(args.output_path, f"dataset_{args.split_type}_test.csv"), header = True, index = False)
