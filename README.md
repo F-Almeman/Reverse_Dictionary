@@ -48,7 +48,7 @@ python3 run_rd.py -d rd_dataset_random_test.csv -t terms.txt -te terms_all-MiniL
 ## RD Evaluation ##
 Different measures could be used to evaluate the RD task. 
 ```
-python3 evaluate_rd.py -d terms_all-MiniLM-L6-v2_definitions_all-MiniLM-L6-v2_rd_dataset.csv -e "mrr"
+python3 eval_rd.py -d terms_all-MiniLM-L6-v2_definitions_all-MiniLM-L6-v2_rd_dataset.csv -e "mrr"
 ```
 
 -d: the dataset generated from the previous step  <br/>
