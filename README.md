@@ -13,7 +13,7 @@ python3 get_embeddings.py -i datasets/definitions.txt -o datasets
 -m: model (default = "all-MiniLM-L6-v2" form SBERT)
 
 ## Dataset ##
-From 3D-EX, we retrieved all the definitions along with their corresponding terms, examples and sources, creating <definition, [list_of_terms_defined_by_that_definition], [list_of_examples],  [list_of_sources]> tuples. [dataset.csv](https://drive.google.com/uc?export=download&id=1qSFITj_gTBe9DOxOo4udrXmIjBvIthFG). 
+From 3D-EX, we retrieved all the definitions along with their corresponding terms, examples and sources, creating <definition, [list_of_terms_defined_by_that_definition], [list_of_examples],  [list_of_sources]> tuples. [dataset.csv](https://drive.google.com/uc?export=download&id=1TdVx9Pk3SQ16vWkr8WBi6SLpKMV9tIm6)
 
 ```
 python3 get_definitions.py -d 3dex.csv -o datasets
