@@ -68,7 +68,7 @@ This script fine-tunes a model on a dataset of terms and definitions to improve 
 
 Different measures could be used to evaluate the RD task. 
 ```
-python3 train_model.py -m "all-MiniLM-L6-v2" -s "WordNet" -t "datasets/WordNet_train.csv" -v "datasets/WordNet_valid.csv"
+python3 train_model.py -m "thenlper/gte-large" -s "WordNet" -t "datasets/WordNet_train.csv" -v "datasets/WordNet_valid.csv"
 ```
 -m: model (default = "all-MiniLM-L6-v2" form SBERT)
 -s: Source dataset <br/>
