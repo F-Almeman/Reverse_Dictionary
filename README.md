@@ -68,11 +68,12 @@ This script fine-tunes a model on a dataset of terms and definitions to improve 
 
 Different measures could be used to evaluate the RD task. 
 ```
-python3 train_model.py -m "thenlper/gte-large" -s "WordNet" -t "datasets/WordNet_train.csv" -v "datasets/WordNet_valid.csv"
+python3 train_model.py -m "thenlper/gte-large" -s "WordNet" -t "datasets/WordNet_train.csv" -v "datasets/WordNet_valid.csv" -l "ContrastiveLoss"
 ```
 -m: model (default = "all-MiniLM-L6-v2" form SBERT)
 -s: Source dataset <br/>
 -t: train split <br/>
 -v: valid split <br/>
+-l: loss function (defaultt = "MSELoss")
 
 The saved model could be used to compute the embeddings of terms and definitions and these embedding are used then in the RD experiment (as in the above scripts)
