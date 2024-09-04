@@ -13,6 +13,56 @@ import numpy as np
 import random
 from datasets import Dataset
 
+def corrupt_definition(definition, mask_token='[MASK]', corruption_percentage=0.15, exclude_indices=set()):
+    # Tokenize the definition at the word level
+    words = word_tokenize(definition)
+    num_words = len(words)
+    
+    # Calculate the number of words to mask
+    num_to_mask = max(1, int(corruption_percentage * num_words))
+    
+    # If there are fewer words than the number we want to mask, adjust num_to_mask
+    num_to_mask = min(num_to_mask, num_words - len(exclude_indices))
+    
+    # Create a list of available indices excluding the ones already masked
+    available_indices = list(set(range(num_words)) - exclude_indices)
+    
+    # Randomly choose words to mask
+    mask_indices = random.sample(available_indices, num_to_mask)
+    
+    # Create a corrupted version of the definition
+    corrupted_words = [mask_token if i in mask_indices else word for i, word in enumerate(words)]
+    corrupted_definition = ' '.join(corrupted_words)
+    
+    return corrupted_definition, set(mask_indices)
+
+def corrupt_and_augment_data(df, mask_token='[MASK]', corruption_percentage=0.15):
+    augmented_data = []
+    
+    for index, row in df.iterrows():
+        original_definition = row['DEFINITION']
+        terms = row['TERMS']
+        
+        # Generate the first corrupted version
+        corrupted_definition_v1, mask_indices_v1 = corrupt_definition(
+            original_definition, mask_token, corruption_percentage
+        )
+        
+        # Generate the second corrupted version, ensuring different words are masked
+        corrupted_definition_v2, _ = corrupt_definition(
+            original_definition, mask_token, corruption_percentage, exclude_indices=mask_indices_v1
+        )
+        
+        # Append original and corrupted versions to the augmented data list
+        augmented_data.append({'DEFINITION': original_definition, 'TERMS': terms})
+        augmented_data.append({'DEFINITION': corrupted_definition_v1, 'TERMS': terms})
+        augmented_data.append({'DEFINITION': corrupted_definition_v2, 'TERMS': terms})
+    
+    # Convert the augmented data list to a DataFrame
+    augmented_df = pd.DataFrame(augmented_data)
+    
+    return augmented_df
+
 def create_pairs(df):
     sentence1 = []
     sentence2 = []
@@ -71,29 +121,23 @@ if __name__ == '__main__':
 
     traindf = pd.read_csv(args.train_file, na_values=[''], keep_default_na=False, index_col=False)
     valdf = pd.read_csv(args.valid_file, na_values=[''], keep_default_na=False, index_col=False)
-    
-    
-    # train
-    traindf['TERMS'] = traindf['TERMS'].apply(ast.literal_eval)
-    traindf['EXAMPLES'] = traindf['EXAMPLES'].apply(ast.literal_eval)
-    traindf['SOURCES'] = traindf['SOURCES'].apply(ast.literal_eval)
-    traindf = traindf.explode('TERMS').reset_index(drop=True)
 
     if 'DEFINITION' not in traindf.columns or 'TERMS' not in traindf.columns:
         raise ValueError("The input CSV file must contain 'DEFINITION' and 'TERMS' columns")
-
-    traindf = traindf[['DEFINITION', 'TERMS']]
-    
-    # valid
-    valdf['TERMS'] = valdf['TERMS'].apply(ast.literal_eval)
-    valdf['EXAMPLES'] = valdf['EXAMPLES'].apply(ast.literal_eval)
-    valdf['SOURCES'] = valdf['SOURCES'].apply(ast.literal_eval)
-    valdf = valdf.explode('TERMS').reset_index(drop=True)
-
+        
     if 'DEFINITION' not in valdf.columns or 'TERMS' not in valdf.columns:
         raise ValueError("The input CSV file must contain 'DEFINITION' and 'TERMS' columns")
+    
+    
+     # train
+    traindf['TERMS'] = traindf['TERMS'].apply(ast.literal_eval)
+    augmented_traindf = corrupt_and_augment_data(traindf)
+    augmented_traindf = augmented_traindf.explode('TERMS').reset_index(drop=True)
 
-    valdf = valdf[['DEFINITION', 'TERMS']]
+    # valid
+    valdf['TERMS'] = valdf['TERMS'].apply(ast.literal_eval)
+    augmented_valdf = corrupt_and_augment_data(valdf)
+    augmented_valdf = augmented_valdf.explode('TERMS').reset_index(drop=True)
 
     loss_fun = args.loss_function
     
@@ -101,14 +145,14 @@ if __name__ == '__main__':
       loss = losses.ContrastiveLoss(model=model)
       
       # Create pairs for contrastive learning
-      train_dataset = create_pairs(traindf)
-      val_dataset = create_pairs(valdf)
+      train_dataset = create_pairs(augmented_traindf)
+      val_dataset = create_pairs(augmented_valdf)
      
     elif loss_fun == "TripletLoss":
       loss = losses.TripletLoss(model=model)
       # Create triplets
-      train_triplets = create_triplets(traindf)
-      val_triplets = create_triplets(valdf)
+      train_triplets = create_triplets(augmented_traindf)
+      val_triplets = create_triplets(augmented_valdf)
 
       train_dataset = Dataset.from_dict({
         'anchor': [triplet[0] for triplet in train_triplets],
@@ -123,8 +167,8 @@ if __name__ == '__main__':
     
     elif loss_fun == "MSEloss":
       loss = losses.MSELoss(model=model)
-      train_dataset = Dataset.from_pandas(traindf)
-      val_dataset = Dataset.from_pandas(valdf)
+      train_dataset = Dataset.from_pandas(augmented_traindf)
+      val_dataset = Dataset.from_pandas(augmented_valdf)
       train_dataset = train_dataset.map(compute_labels, batched=True)
       val_dataset = val_dataset.map(compute_labels, batched=True)
       train_dataset = train_dataset.remove_columns(['TERMS'])
@@ -139,6 +183,9 @@ if __name__ == '__main__':
         save_steps=1000000,  # Set a large number to avoid saving intermediate checkpoints
         save_strategy='epoch',  # Save checkpoints only at the end of each epoch
         save_total_limit=1,  # Keep only the most recent checkpoint
+        evaluation_strategy='epoch',  # Evaluate at the end of each epoch
+        logging_steps=10,  # Log every 10 steps
+        logging_first_step=True,  # Log the first step
     )
 
     trainer = SentenceTransformerTrainer(
